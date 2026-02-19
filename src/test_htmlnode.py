@@ -1,5 +1,5 @@
 import unittest
-from htmlnode import HTMLNode
+from src.htmlnode import HTMLNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_to_html_not_equal(self):

@@ -1,5 +1,5 @@
 import unittest
-from markdown_blocks import markdown_to_blocks, block_to_block_type, BlockType
+from src.markdown_blocks import markdown_to_blocks, block_to_block_type, BlockType
 
 class TestMarkdownToBlocks(unittest.TestCase):
     def test_markdown_to_blocks(self):
@@ -107,6 +107,7 @@ and has no special formatting"""
 3. Item 2
 4. Item 3"""
         self.assertEqual(block_to_block_type(block), BlockType.PARAGRAPH)
+    
     
     
 

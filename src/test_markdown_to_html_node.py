@@ -1,5 +1,5 @@
-from markdown_to_html_node import markdown_to_html_node
-from htmlnode import ParentNode
+from src.markdown_blocks import markdown_to_html_node
+from src.htmlnode import ParentNode
 import unittest
 
 class TestMarkdownToHTMLNode(unittest.TestCase):
