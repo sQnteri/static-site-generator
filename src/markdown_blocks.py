@@ -10,8 +10,15 @@ class BlockType(Enum):
 
 def markdown_to_blocks(markdown):
     
-    blocks = [block.strip() for block in markdown.split("\n\n") if block.strip() != ""]
-    return blocks
+    blocks = [block.strip()for block in markdown.split("\n\n") if block.strip() != ""]
+    stripped = []
+    for block in blocks:
+        new_block = ""
+        for line in block.split("\n"):
+            new_block += line.strip() + "\n"
+        stripped.append(new_block.strip())
+            
+    return stripped
 
 def block_to_block_type(block):
     lines = block.split("\n")
