@@ -1,5 +1,5 @@
 import unittest
-from src.gencontent import extract_title
+from gencontent import extract_title
 
 class TestGenContent(unittest.TestCase):
     def test_extract_title(self):

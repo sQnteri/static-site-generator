@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from src.markdown_blocks import markdown_to_html_node
+from markdown_blocks import markdown_to_html_node
 
 def extract_title(markdown):
     lines = markdown.split("\n")
@@ -10,7 +10,7 @@ def extract_title(markdown):
             return stripped[2:].strip()
     raise Exception("No header found")
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
@@ -24,7 +24,16 @@ def generate_page(from_path, template_path, dest_path):
     title = extract_title(markdown)
     content = html_node.to_html()
 
-    page = template.replace("{{ Title }}", title).replace("{{ Content }}", content)  
+    if not basepath.startswith("/"):
+        basepath = "/" + basepath
+    if not basepath.endswith("/"):
+        basepath = basepath + "/"
+    
+    page = template.replace(
+        "{{ Title }}", title).replace(
+        "{{ Content }}", content).replace(
+        'href="/', f'href="{basepath}').replace(
+        'src="/', f'src="{basepath}')
 
     dest_dir = os.path.dirname(dest_path)
     if dest_dir:
@@ -33,13 +42,13 @@ def generate_page(from_path, template_path, dest_path):
     with open(dest_path, "w") as f:
         f.write(page)
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     for entry in os.listdir(dir_path_content):
         entry_path = os.path.join(dir_path_content, entry)
         if os.path.isdir(entry_path):
-            generate_pages_recursive(entry_path, template_path, os.path.join(dest_dir_path, entry))
+            generate_pages_recursive(entry_path, template_path, os.path.join(dest_dir_path, entry), basepath)
         elif entry.endswith(".md"):
             dest_path = os.path.join(dest_dir_path, Path(entry).with_suffix(".html").name)
-            generate_page(entry_path, template_path, dest_path)
+            generate_page(entry_path, template_path, dest_path, basepath)
 
     
